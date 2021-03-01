@@ -9,9 +9,9 @@ import java.sql.PreparedStatement;
 
 public class DBConnector {
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/test_db"; //port 3306
-	static final String USERNAME = "test_user";
-	static final String PASSWORD = "test";
+	static final String DB_URL = "jdbc:mysql://localhost/test2_db"; //port 3306
+	static final String USERNAME = "test2_user";
+	static final String PASSWORD = "test2";
 	
 	static Connection conn = null;
 	static PreparedStatement stmt = null;
@@ -68,6 +68,33 @@ public class DBConnector {
         }
 	}
 	
+	public static void insert(String areaCode, String areaName, String sigunguCode, String sigunguName, int listCount) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("INSERT INTO test_tb(areaCode, areaName, sigunguCode, sigunguName, listCount)");
+        
+        sb.append(" VALUES(");
+        sb.append("'" + Integer.parseInt(areaCode) + "'" + ",");
+        sb.append("'" + areaName + "'" + ",");
+        sb.append("'" + Integer.parseInt(sigunguCode) + "'" + ",");
+        sb.append("'" + sigunguName + "'" + ",");
+        sb.append("'" + listCount + "'" + ")");
+        
+        try {
+			stmt = conn.prepareStatement(sb.toString());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+        
+        System.out.println(sb.toString());
+        
+        try {
+        	stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+        	e.printStackTrace();
+        }
+        
+	}
 	//public static select
 	
 	public static void disconnectDB() {
