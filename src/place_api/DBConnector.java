@@ -39,13 +39,18 @@ public class DBConnector {
         	//conn = getConnection();
             
             StringBuilder sb = new StringBuilder();
-            sb.append("INSERT INTO test_tb");
-            //sb.append(" ('title', 'addr1', 'contentid', 'contenttypeid', 'firstimage', 'firstimage2')");
+            sb.append("INSERT INTO place_tb(title, addr1, contentid, contenttypeid, areaCode, areaName, sigunguCode, sigunguName, firstimage, firstimage2, mapx, mapy, overview)");
             sb.append(" VALUES(");
             sb.append("'" + place.title + "'" + ",");
             sb.append("'" + place.addr1 + "'" + ",");
             sb.append("'" + place.contentid + "'" + ",");
             sb.append("'" + place.contenttypeid + "'" + ",");
+            
+            sb.append("'" + place.areaCode + "'" + ",");
+            sb.append("'" + place.areaName + "'" + ",");
+            sb.append("'" + place.sigunguCode + "'" + ",");
+            sb.append("'" + place.sigunguName + "'" + ",");
+            
             sb.append("'" + place.firstimage + "'" + ",");
             sb.append("'" + place.firstimage2 + "'" + ",");
             sb.append("'" + place.mapx + "'" + ",");
