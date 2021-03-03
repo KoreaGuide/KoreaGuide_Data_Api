@@ -2,6 +2,7 @@ package place_api;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 public class URLBuilder {
@@ -16,9 +17,11 @@ public class URLBuilder {
 	
 	//area list
 	public static URL getAreaListURL() throws IOException {
+		String ServicekeyDecoded = URLDecoder.decode(Servicekey, "UTF-8");
+		
 		 StringBuilder urlBuilder = new StringBuilder("http://api.visitkorea.or.kr/openapi/service/rest/EngService/areaCode"); /*URL*/
 		 urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + Servicekey); /*Service Key*/
-		 urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + URLEncoder.encode(Servicekey, "UTF-8")); /*공공데이터포털에서 발급받은 인증키*/
+		 urlBuilder.append("&" + URLEncoder.encode("ServiceKey","UTF-8") + "=" + URLEncoder.encode(ServicekeyDecoded, "UTF-8")); /*공공데이터포털에서 발급받은 인증키*/
 	     urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("20", "UTF-8")); /*한 페이지 결과 수*/
 	     urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*현재 페이지 번호*/
 	     urlBuilder.append("&" + URLEncoder.encode("MobileOS","UTF-8") + "=" + URLEncoder.encode("IOS", "UTF-8")); /*IOS(아이폰),AND(안드로이드),WIN(원도우폰),ETC*/
