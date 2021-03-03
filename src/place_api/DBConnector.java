@@ -9,9 +9,9 @@ import java.sql.PreparedStatement;
 
 public class DBConnector {
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/test2_db"; //port 3306
-	static final String USERNAME = "test2_user";
-	static final String PASSWORD = "test2";
+	static final String DB_URL = "jdbc:mysql://localhost/place_db"; //port 3306
+	static final String USERNAME = "place_user";
+	static final String PASSWORD = "place";
 	
 	static Connection conn = null;
 	static PreparedStatement stmt = null;
@@ -39,7 +39,7 @@ public class DBConnector {
         	//conn = getConnection();
             
             StringBuilder sb = new StringBuilder();
-            sb.append("INSERT INTO place_tb(title, addr1, addr2, contentid, contenttypeid, areaCode, sigunguCode, firstimage, firstimage2, mapx, mapy, overview, cat1, cat2, cat3)");
+            sb.append("INSERT INTO place_tb(title, addr1, addr2, contentid, contenttypeid, areacode, sigungucode, firstimage, firstimage2, mapx, mapy, overview, cat1, cat2, cat3)");
             sb.append(" VALUES(");
             sb.append("'" + place.title + "'" + ",");
             sb.append("'" + place.addr1 + "'" + ",");
@@ -85,7 +85,7 @@ public class DBConnector {
 	
 	public static void insert(String areaCode, String areaName, String sigunguCode, String sigunguName, int listCount) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("INSERT INTO test_tb(areaCode, areaName, sigunguCode, sigunguName, listCount)");
+		sb.append("INSERT INTO code_tb(areacode, areaname, sigungucode, sigunguname, listcount)");
         
         sb.append(" VALUES(");
         sb.append("'" + Integer.parseInt(areaCode) + "'" + ",");
