@@ -6,7 +6,9 @@ import java.net.URLEncoder;
 
 public class URLBuilder {
 	//static final String Servicekey = "0TLwVqfnTrqRnpg3f0inVuelelJ88NJxpm66D8nF3CJDtKsUz%2FzC9nUeaKMdjGi3HuvRT9PCKEgbwXsj2SpgAQ%3D%3D";
-	static final String Servicekey = "mNRODwVUdzy%2FTxMm2dhNUuKz%2FPZI9JMt%2BoTFBvKAnwqrEvC3goSVss92nxTpUrD%2BVsboNudDpJ5Be2CETJeYXw%3D%3D";
+	//static final String Servicekey = "mNRODwVUdzy%2FTxMm2dhNUuKz%2FPZI9JMt%2BoTFBvKAnwqrEvC3goSVss92nxTpUrD%2BVsboNudDpJ5Be2CETJeYXw%3D%3D";
+	//static final String Servicekey = "x6LivSn9KOEYUgXmC43NEUTS%2Ba2XpC3NAq7PUrRsAtKBOAzdqiWUVWP%2FAh%2FTroTWgbgY6c5sU%2FI84IE7rInbIg%3D%3D";
+	static final String Servicekey = "E71gDmC3nWH8uyivbwfvJo7aTjPAmWxldRDBzmiEQaY74J8XxZya%2Bjd1h85IF2IJ6CIC9KjoN7CQ2fN8xRyxlg%3D%3D";
 	static final String AppName = "AppTest";
 	
 	//area list

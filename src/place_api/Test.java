@@ -5,11 +5,15 @@ import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-
 public class Test {
 	public static void main(String[] args) {
 		
+		//String tmp = "fefejife'ennfneil'efkn";
+		//System.out.println(tmp.replaceAll("'", "---"));
+		
 		placeSaver();
+		
+		
 		/*
 		String jsonResult = null;
 		
@@ -111,7 +115,6 @@ public class Test {
 			System.out.println("Area total count : " + areaCount);
 			System.out.println(areaCode + " " + areaName);
 			
-			
 			String sigunguResult = null;
 			
 			try {
@@ -131,7 +134,6 @@ public class Test {
 					String sigunguCode = obj.get("code").toString();
 					String sigunguName = obj.get("name").toString();
 					
-					
 					////////
 					placeDetailSaver(areaCode, sigunguCode);
 				}
@@ -143,19 +145,32 @@ public class Test {
 						e.printStackTrace();
 					}
 					
-					sigunguItems = JSONParser.parseItems(sigunguResult);
-					
-					for(int k = 0; k < sigunguItems.size(); k++) {
-						JSONObject obj = (JSONObject)sigunguItems.get(k);
+					if(sigunguCount % 20 == 1) {
+						JSONObject sigunguItem = JSONParser.parseItem(sigunguResult);
+
+						String sigunguCode = sigunguItem.get("code").toString();
+						String sigunguName = sigunguItem.get("name").toString();
 						
-						String sigunguCode = obj.get("code").toString();
-						String sigunguName = obj.get("name").toString();
-						
-						
-						
-						//////
 						placeDetailSaver(areaCode, sigunguCode);
 					}
+					else {
+						sigunguItems = JSONParser.parseItems(sigunguResult);
+						
+						for(int k = 0; k < sigunguItems.size(); k++) {
+							JSONObject sigunguItem = (JSONObject)sigunguItems.get(k);
+							
+							String sigunguCode = sigunguItem.get("code").toString();
+							String sigunguName = sigunguItem.get("name").toString();
+							
+							//////
+							placeDetailSaver(areaCode, sigunguCode);
+						
+						}
+					}
+					
+					
+					
+					
 				}
 			}
 			else {
@@ -164,18 +179,14 @@ public class Test {
 				String sigunguCode = sigunguItem.get("code").toString();
 				String sigunguName = sigunguItem.get("name").toString();
 				
-				
 				////////
 				placeDetailSaver(areaCode, sigunguCode);
-				
 			}
 		}
-		
 		DBConnector.disconnectDB();
 	}
 	
 	public static void placeDetailSaver(String areaCode, String sigunguCode) {
-
 		String listResult = null;
 		try {
 			listResult = APICaller.callAPI(URLBuilder.getPlaceListURL("1", areaCode, sigunguCode));
@@ -190,7 +201,6 @@ public class Test {
 			
 			for(int i = 0; i < placeItems.size(); i++) {
 				JSONObject placeItem = (JSONObject)placeItems.get(i);
-				
 				Place place = convertObject(placeItem);
 				
 				//detail search
@@ -204,15 +214,20 @@ public class Test {
 				int detailCount = JSONParser.getTotalCount(detailResult);
 				if(detailCount > 1) {
 					JSONArray detailItems = JSONParser.parseItems(detailResult);
-					
-					System.out.println(".....detailItems.....");
+					System.out.println("..... detailItems .....");
 				}
 				else {
 					JSONObject detailItem = JSONParser.parseItem(detailResult);
 					
-					place.overview = detailItem.get("overview").toString().replaceAll("'", "/'");; //'
+					place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+					
+					place.cat1 = detailItem.get("cat1").toString();
+					place.cat2 = detailItem.get("cat2").toString();
+					place.cat3 = detailItem.get("cat3").toString();
+					
 					place.areaCode = Integer.parseInt(areaCode);
 					place.sigunguCode = Integer.parseInt(sigunguCode);
+					
 					DBConnector.insert(place);
 				}
 				//detailResult -> get overview
@@ -224,14 +239,13 @@ public class Test {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				placeItems = JSONParser.parseItems(listResult);
-				for(int i = 0; i < placeItems.size(); i++) {
-					JSONObject placeItem = (JSONObject)placeItems.get(i);
-					
+				
+				if(listCount % 20 == 1) {
+
+					JSONObject placeItem = JSONParser.parseItem(listResult);
 					Place place = convertObject(placeItem);
 					
 					//detail search
-
 					String detailResult = null;
 					try {
 						detailResult = APICaller.callAPI(URLBuilder.getPlaceDetailURL(place.contentid));
@@ -242,19 +256,63 @@ public class Test {
 					int detailCount = JSONParser.getTotalCount(detailResult);
 					if(detailCount > 1) {
 						JSONArray detailItems = JSONParser.parseItems(detailResult);
-						
 						System.out.println(".....detailItems.....");
 					}
 					else {
 						JSONObject detailItem = JSONParser.parseItem(detailResult);
+						place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+						
+						place.cat1 = detailItem.get("cat1").toString();
+						place.cat2 = detailItem.get("cat2").toString();
+						place.cat3 = detailItem.get("cat3").toString();
+						
 						place.areaCode = Integer.parseInt(areaCode);
 						place.sigunguCode = Integer.parseInt(sigunguCode);
-						place.overview = detailItem.get("overview").toString().replaceAll("'", "/'");; //'
 						
 						DBConnector.insert(place);
 					}
 					//detailResult -> get overview
 				}
+				else {
+					placeItems = JSONParser.parseItems(listResult); // 여기서 문제~ 여기서 하나가 나온듯?????? //
+					
+					for(int i = 0; i < placeItems.size(); i++) {
+						JSONObject placeItem = (JSONObject)placeItems.get(i);
+						Place place = convertObject(placeItem);
+						
+						//detail search
+						
+						String detailResult = null;
+						try {
+							detailResult = APICaller.callAPI(URLBuilder.getPlaceDetailURL(place.contentid));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+						int detailCount = JSONParser.getTotalCount(detailResult);
+						if(detailCount > 1) {
+							JSONArray detailItems = JSONParser.parseItems(detailResult);	
+							System.out.println("..... detailItems .....");
+						}
+						else {
+							JSONObject detailItem = JSONParser.parseItem(detailResult);
+							
+
+							place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+							
+							place.cat1 = detailItem.get("cat1").toString();
+							place.cat2 = detailItem.get("cat2").toString();
+							place.cat3 = detailItem.get("cat3").toString();
+							
+							place.areaCode = Integer.parseInt(areaCode);
+							place.sigunguCode = Integer.parseInt(sigunguCode);
+							
+							DBConnector.insert(place);
+						}
+						//detailResult -> get overview
+					}
+				}
+				
 				
 			}
 		}
@@ -263,11 +321,9 @@ public class Test {
 		}
 		else {
 			JSONObject placeItem = JSONParser.parseItem(listResult);
-			
 			Place place = convertObject(placeItem);
 			
 			//detail search
-
 			String detailResult = null;
 			try {
 				detailResult = APICaller.callAPI(URLBuilder.getPlaceDetailURL(place.contentid));
@@ -278,27 +334,29 @@ public class Test {
 			int detailCount = JSONParser.getTotalCount(detailResult);
 			if(detailCount > 1) {
 				JSONArray detailItems = JSONParser.parseItems(detailResult);
-				
 				System.out.println(".....detailItems.....");
 			}
 			else {
 				JSONObject detailItem = JSONParser.parseItem(detailResult);
+				
+
+				place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+				
+				place.cat1 = detailItem.get("cat1").toString();
+				place.cat2 = detailItem.get("cat2").toString();
+				place.cat3 = detailItem.get("cat3").toString();
+				
 				place.areaCode = Integer.parseInt(areaCode);
 				place.sigunguCode = Integer.parseInt(sigunguCode);
-				place.overview = detailItem.get("overview").toString().replaceAll("'", "/'"); //'
 				
 				DBConnector.insert(place);
 			}
 			//detailResult -> get overview
 		}
 		
-		
-		
-		//DBConnector.insert(place);
 	}
 	
 	public static void codeSaver() {
-
 		DBConnector.connectDB();
 		
 		String areaResult = null;
@@ -410,7 +468,7 @@ public class Test {
 	
 	public static Place convertObject(JSONObject object) {
 		Place place = new Place();
-		place.title = object.get("title").toString();
+		place.title = object.get("title").toString().replaceAll("'", "''");
 		if(object.get("addr1") != null) {
 			place.addr1 = object.get("addr1").toString();
 		}
@@ -420,6 +478,14 @@ public class Test {
 		
 		place.contentid = object.get("contentid").toString();
 		place.contenttypeid = object.get("contenttypeid").toString();
+		
+		if(object.get("areacode") != null) {
+			place.areaCode = Integer.parseInt(object.get("areacode").toString());
+		}
+		
+		if(object.get("sigungucode") != null) {
+			place.sigunguCode = Integer.parseInt(object.get("sigungucode").toString());
+		}
 		
 		if(object.get("firstimage") != null) {
 			place.firstimage = object.get("firstimage").toString(); 

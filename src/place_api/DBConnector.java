@@ -39,23 +39,30 @@ public class DBConnector {
         	//conn = getConnection();
             
             StringBuilder sb = new StringBuilder();
-            sb.append("INSERT INTO place_tb(title, addr1, contentid, contenttypeid, areaCode, areaName, sigunguCode, sigunguName, firstimage, firstimage2, mapx, mapy, overview)");
+            sb.append("INSERT INTO place_tb(title, addr1, addr2, contentid, contenttypeid, areaCode, sigunguCode, firstimage, firstimage2, mapx, mapy, overview, cat1, cat2, cat3)");
             sb.append(" VALUES(");
             sb.append("'" + place.title + "'" + ",");
             sb.append("'" + place.addr1 + "'" + ",");
+            sb.append("'" + place.addr2 + "'" + ",");
             sb.append("'" + place.contentid + "'" + ",");
             sb.append("'" + place.contenttypeid + "'" + ",");
             
             sb.append("'" + place.areaCode + "'" + ",");
-            sb.append("'" + place.areaName + "'" + ",");
+            //sb.append("'" + place.areaName + "'" + ",");
             sb.append("'" + place.sigunguCode + "'" + ",");
-            sb.append("'" + place.sigunguName + "'" + ",");
+            //sb.append("'" + place.sigunguName + "'" + ",");
             
             sb.append("'" + place.firstimage + "'" + ",");
             sb.append("'" + place.firstimage2 + "'" + ",");
+            
             sb.append("'" + place.mapx + "'" + ",");
             sb.append("'" + place.mapy + "'" + ",");
-            sb.append("'" + place.overview + "'" + ")");
+            
+            sb.append("'" + place.overview + "'" + ",");
+            
+            sb.append("'" + place.cat1 + "'" + ",");
+            sb.append("'" + place.cat2 + "'" + ",");
+            sb.append("'" + place.cat3 + "'" + ")");
             
             stmt = conn.prepareStatement(sb.toString());
             
@@ -71,6 +78,9 @@ public class DBConnector {
         catch(SQLException e){
             System.out.println("Error " + e);
         }
+		
+		
+		System.out.println("insertion success");
 	}
 	
 	public static void insert(String areaCode, String areaName, String sigunguCode, String sigunguName, int listCount) {

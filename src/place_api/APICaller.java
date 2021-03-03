@@ -8,6 +8,8 @@ import java.net.URL;
 
 public class APICaller {
 
+	static int count = 0;
+	
 	public static String callAPI(URL url) throws IOException {
 		System.out.println("API call url : " + url.toString());
 		
@@ -29,7 +31,7 @@ public class APICaller {
         rd.close();
         conn.disconnect();
         
-        System.out.println("API call result : " + sb.toString());
+        System.out.println(++count + "API call result : " + sb.toString());
         
         return sb.toString();
 	}

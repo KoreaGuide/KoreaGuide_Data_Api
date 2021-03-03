@@ -9,9 +9,9 @@ public class Place {
 	String contenttypeid = null; 
 	
 	int areaCode;
-	String areaName;
+	//String areaName;
 	int sigunguCode;
-	String sigunguName;
+	//String sigunguName;
 	
 	String firstimage = null; 
 	String firstimage2 = null; 
