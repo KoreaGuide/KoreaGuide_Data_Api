@@ -6,12 +6,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Test {
+	static final int[] areaCodes = {1, 2, 31, 32, 33, 34, 35, 36, 37, 38, 39}; //11
+	
 	public static void main(String[] args) {
 		
 		//String tmp = "fefejife'ennfneil'efkn";
 		//System.out.println(tmp.replaceAll("'", "---"));
 		
-		placeSaver();
+		for(int i = 0; i < areaCodes.length; i++) {
+			newPlaceSaver(areaCodes[i]);
+		}
+		
+		//placeSaver();
 		//codeSaver();
 		
 		/*
@@ -91,6 +97,179 @@ public class Test {
 		
 	}
 	
+	//static final int[] areaCodes = {1, 2, 31, 32, 33, 34, 35, 36, 37, 38, 39};
+	
+	public static void newPlaceSaver(int areaCode) {
+		DBConnector.connectDB();
+		
+		String listResult = null;
+		try {
+			listResult = APICaller.callAPI(URLBuilder.getPlaceListURL("1", "" + areaCode));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		int listCount = JSONParser.getTotalCount(listResult);
+		
+		if(listCount == 0) {
+			System.out.println(".....list count zero.....");
+		}
+		else if(listCount == 1) {
+			JSONObject placeItem = JSONParser.parseItem(listResult);
+			//Place place = convertObject(placeItem);
+			
+			String detailResult = null;
+			try {
+				detailResult = APICaller.callAPI(URLBuilder.getPlaceDetailURL(placeItem.get("contentid").toString()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			int detailCount = JSONParser.getTotalCount(detailResult);
+			if(detailCount == 1) {
+				JSONObject detailItem = JSONParser.parseItem(detailResult);
+				Place place = convertObject(detailItem);
+				place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+				
+				//place.cat1 = detailItem.get("cat1").toString();
+				//place.cat2 = detailItem.get("cat2").toString();
+				//place.cat3 = detailItem.get("cat3").toString();
+				
+				//place.areaCode = (int) detailItem.get("areacode");
+				
+				//place.sigunguCode = Integer.parseInt(sigunguCode);
+				
+				DBConnector.insert(place);
+			}
+			else {
+				System.out.println(".....detail result not one.....");
+			}
+		}
+		else if(listCount > 1){
+			JSONArray placeItems = JSONParser.parseItems(listResult);
+			
+			for(int i = 0; i < placeItems.size(); i++) {
+				JSONObject placeItem = (JSONObject)placeItems.get(i);
+				//Place place = convertObject(placeItem);
+				
+				//detail search
+				String detailResult = null;
+				try {
+					detailResult = APICaller.callAPI(URLBuilder.getPlaceDetailURL(placeItem.get("contentid").toString()));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				int detailCount = JSONParser.getTotalCount(detailResult);
+				if(detailCount == 1) {
+					JSONObject detailItem = JSONParser.parseItem(detailResult);
+					Place place = convertObject(detailItem);
+					place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+					
+					//place.cat1 = detailItem.get("cat1").toString();
+					//place.cat2 = detailItem.get("cat2").toString();
+					//place.cat3 = detailItem.get("cat3").toString();
+					
+					//place.areaCode = (int) detailItem.get("areacode");
+					
+					//place.sigunguCode = Integer.parseInt(sigunguCode);
+					
+					DBConnector.insert(place);
+				}
+				else {
+					System.out.println(".....detail result not one.....");
+				}
+			}
+			
+			for(int page2 = 2; page2 <= listCount/21 + 1; page2++) {
+				if(page2 > 3) {
+					break;
+				}
+				
+				try {
+					listResult = APICaller.callAPI(URLBuilder.getPlaceListURL(page2 + "","" + areaCode));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				if(listCount % 20 == 1) {
+
+					JSONObject placeItem = JSONParser.parseItem(listResult);
+					//Place place = convertObject(placeItem);
+					
+					//detail search
+					String detailResult = null;
+					try {
+						detailResult = APICaller.callAPI(URLBuilder.getPlaceDetailURL(placeItem.get("contentid").toString()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					int detailCount = JSONParser.getTotalCount(detailResult);
+					if(detailCount == 1) {
+						JSONObject detailItem = JSONParser.parseItem(detailResult);
+						Place place = convertObject(detailItem);
+						place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+						
+						//place.cat1 = detailItem.get("cat1").toString();
+						//place.cat2 = detailItem.get("cat2").toString();
+						//place.cat3 = detailItem.get("cat3").toString();
+						
+						//place.areaCode = (int) detailItem.get("areacode");
+						
+						//place.sigunguCode = Integer.parseInt(sigunguCode);
+						
+						DBConnector.insert(place);
+					}
+					else {
+						System.out.println(".....detail result not one.....");
+					}
+				}
+				else {
+					placeItems = JSONParser.parseItems(listResult); // 여기서 문제~ 여기서 하나가 나온듯?????? //
+					
+					for(int i = 0; i < placeItems.size(); i++) {
+						JSONObject placeItem = (JSONObject)placeItems.get(i);
+						//Place place = convertObject(placeItem);
+						
+						//detail search
+						
+						String detailResult = null;
+						try {
+							detailResult = APICaller.callAPI(URLBuilder.getPlaceDetailURL(placeItem.get("contentid").toString()));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+						int detailCount = JSONParser.getTotalCount(detailResult);
+						if(detailCount == 1) {
+							JSONObject detailItem = JSONParser.parseItem(detailResult);
+							Place place = convertObject(detailItem);
+							place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
+							
+							//place.cat1 = detailItem.get("cat1").toString();
+							//place.cat2 = detailItem.get("cat2").toString();
+							//place.cat3 = detailItem.get("cat3").toString();
+							
+							//place.areaCode = (int) detailItem.get("areacode");
+							
+							//place.sigunguCode = Integer.parseInt(sigunguCode);
+							
+							DBConnector.insert(place);
+						}
+						else {
+							System.out.println(".....detail result not one.....");
+						}
+					}
+				}
+				
+				
+			}
+		}
+		
+		DBConnector.disconnectDB();
+		
+	}
 	
 	public static void placeSaver() {
 		DBConnector.connectDB();
