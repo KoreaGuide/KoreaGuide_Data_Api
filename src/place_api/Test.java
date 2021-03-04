@@ -97,6 +97,12 @@ public class Test {
 		
 	}
 	
+	public static String removeTags(String input) {
+		String output = input.replaceAll("</i>", "").replaceAll("<i>", "").replaceAll("</em>", "").replaceAll("<em>", "").replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<br />", "").replaceAll("<BR>", "\n").replaceAll("<br/>", "").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", "");
+	
+		return output;
+	}
+	
 	//static final int[] areaCodes = {1, 2, 31, 32, 33, 34, 35, 36, 37, 38, 39};
 	
 	public static void newPlaceSaver(int areaCode) {
@@ -129,8 +135,7 @@ public class Test {
 			if(detailCount == 1) {
 				JSONObject detailItem = JSONParser.parseItem(detailResult);
 				Place place = convertObject(detailItem);
-				place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
-				
+				place.overview = removeTags(detailItem.get("overview").toString());
 				//place.cat1 = detailItem.get("cat1").toString();
 				//place.cat2 = detailItem.get("cat2").toString();
 				//place.cat3 = detailItem.get("cat3").toString();
@@ -164,8 +169,7 @@ public class Test {
 				if(detailCount == 1) {
 					JSONObject detailItem = JSONParser.parseItem(detailResult);
 					Place place = convertObject(detailItem);
-					place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
-					
+					place.overview = removeTags(detailItem.get("overview").toString());
 					//place.cat1 = detailItem.get("cat1").toString();
 					//place.cat2 = detailItem.get("cat2").toString();
 					//place.cat3 = detailItem.get("cat3").toString();
@@ -183,7 +187,7 @@ public class Test {
 			
 			for(int page2 = 2; page2 <= listCount/21 + 1; page2++) {
 				if(page2 > 3) {
-					break;
+					break; //60 limit
 				}
 				
 				try {
@@ -209,8 +213,7 @@ public class Test {
 					if(detailCount == 1) {
 						JSONObject detailItem = JSONParser.parseItem(detailResult);
 						Place place = convertObject(detailItem);
-						place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
-						
+						place.overview = removeTags(detailItem.get("overview").toString());
 						//place.cat1 = detailItem.get("cat1").toString();
 						//place.cat2 = detailItem.get("cat2").toString();
 						//place.cat3 = detailItem.get("cat3").toString();
@@ -245,8 +248,7 @@ public class Test {
 						if(detailCount == 1) {
 							JSONObject detailItem = JSONParser.parseItem(detailResult);
 							Place place = convertObject(detailItem);
-							place.overview = detailItem.get("overview").toString().replaceAll("'", "''").replaceAll("<be>", "").replaceAll("<br >", "\n").replaceAll("<BR>", "\n").replaceAll("<br>", "\n").replaceAll("<Br>", "\n").replaceAll("&nbsp;", " ").replaceAll("<b>", "").replaceAll("</b>", ""); //'
-							
+							place.overview = removeTags(detailItem.get("overview").toString());
 							//place.cat1 = detailItem.get("cat1").toString();
 							//place.cat2 = detailItem.get("cat2").toString();
 							//place.cat3 = detailItem.get("cat3").toString();
