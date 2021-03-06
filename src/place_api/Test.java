@@ -13,6 +13,9 @@ public class Test {
 		//String tmp = "fefejife'ennfneil'efkn";
 		//System.out.println(tmp.replaceAll("'", "---"));
 		
+		//newPlaceSaver(areaCodes[1]);
+		
+		
 		for(int i = 0; i < areaCodes.length; i++) {
 			newPlaceSaver(areaCodes[i]);
 		}
@@ -600,7 +603,13 @@ public class Test {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
+					/*
+					if(sigunguCount % 20 == 1) {
+						JSONObject sigunguItem = (JSONObject)sigungu
+					}
+					else {
+						
+					}*/
 					sigunguItems = JSONParser.parseItems(sigunguResult);
 					
 					for(int k = 0; k < sigunguItems.size(); k++) {

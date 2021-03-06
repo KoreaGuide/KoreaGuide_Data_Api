@@ -9,9 +9,10 @@ import java.sql.PreparedStatement;
 
 public class DBConnector {
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/place_db"; //port 3306
-	static final String USERNAME = "place_user";
-	static final String PASSWORD = "place";
+	//static final String DB_URL = "jdbc:mysql://localhost/place_db"; //port 3306
+	static final String DB_URL = "jdbc:mysql://165.194.104.23:6689/caps_data";
+	static final String USERNAME = "jisoo";
+	static final String PASSWORD = "53392c";
 	
 	static Connection conn = null;
 	static PreparedStatement stmt = null;
