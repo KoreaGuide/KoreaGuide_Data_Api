@@ -6,7 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Test {
-	static final int[] areaCodes = {1, 2, 31, 32, 33, 34, 35, 36, 37, 38, 39}; //11
+	static final int[] areaCodes = {1, 31, 32, 33, 34, 35, 36, 37, 38, 39}; //11
 	
 	public static void main(String[] args) {
 		

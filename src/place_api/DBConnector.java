@@ -10,9 +10,13 @@ import java.sql.PreparedStatement;
 public class DBConnector {
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 	//static final String DB_URL = "jdbc:mysql://localhost/place_db"; //port 3306
-	static final String DB_URL = "jdbc:mysql://165.194.104.23:6689/caps_data";
-	static final String USERNAME = "jisoo";
-	static final String PASSWORD = "53392c";
+	//static final String DB_URL = "jdbc:mysql://165.194.104.23:6689/caps_data";
+	//static final String USERNAME = "jisoo";
+	//static final String PASSWORD = "53392c";
+	static final String DB_URL = "jdbc:mysql://localhost/caps_data";
+	static final String USERNAME = "root";
+	static final String PASSWORD = "dlatjsgh99";
+	
 	
 	static Connection conn = null;
 	static PreparedStatement stmt = null;
@@ -40,7 +44,7 @@ public class DBConnector {
         	//conn = getConnection();
             
             StringBuilder sb = new StringBuilder();
-            sb.append("INSERT INTO place_tb(title, addr1, addr2, contentid, contenttypeid, areacode, sigungucode, firstimage, firstimage2, mapx, mapy, overview, cat1, cat2, cat3)");
+            sb.append("INSERT INTO place_tb(title, addr1, addr2, contentid, contenttypeid, areacode, sigungucode, firstimage, firstimage2, mapx, mapy, overview_eng, cat1code, cat2code, cat3code)");
             sb.append(" VALUES(");
             sb.append("'" + place.title + "'" + ",");
             sb.append("'" + place.addr1 + "'" + ",");
